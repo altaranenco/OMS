@@ -16,9 +16,9 @@
 
 Важное влияние на стоимость Log Analytics заключается в модели лицензирования per Node или per GB. Если вы создавали свою Azure Subscription после мая 2018 года, то скорее всего у вас принудительно установлен тип цен per GB. По умолчанию, скрипты ориентируются именно на новую модель ценообразования OMS (per GB 2018). В таком случае, вы оплачиваете только объем загруженных данных. Если же, у вас используется модель с оплатой по агентски\за узел (per node), скрипт может дать негативный эффект с точки зрения затрат на Log Analytics. В таком случае (per Node), установите параметр скрипта **$OMSPriceModeperGB** в значение False.
 
-## $OMSPriceModeperGB=TRUE
+### $OMSPriceModeperGB=TRUE
 Используются поля Computer и IpAddress
-## $OMSPriceModeperGB=FALCE
+### $OMSPriceModeperGB=FALCE
 Поле Computer заменяется на поле Host_s, а поле IpAddress заменяется на IP_s
 Не забудьте вручную изменить Dashboard!
 
@@ -80,7 +80,7 @@ MaxPatrol должен быть настроен на автоматическу
 ```
     Vulner_CL
     | where TimeGenerated > ago(1d)
-    | summarize count() by Level_s
+    | summarize count() by Level
 ```
 Вывести уязвимости по компьютерам, с разбивкой на уровень
 ```
