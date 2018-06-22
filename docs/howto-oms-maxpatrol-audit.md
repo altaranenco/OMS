@@ -1,5 +1,6 @@
 # О скрипте MaxPatrolXMLtoJSON.ps1
-Данный скрипт (вместе с OMSDataCollector.ps1) предназначен для отправки отчетов MaxPatrol в Microsoft OMS (Log Analytics). Интеграция отчетов MaxPatrol с OMS позволяет получить удобный, полезный и красивый механизм обработки данных об уязвимостях найденных с помощью MaxPatrol. Скрипт создает класс Vulner_CL. ![alt-Пример данных MaxPatrol в OMS](https://github.com/altaranenco/OMS/blob/master/docs/vulnerability_03.PNG "Пример данных MaxPatrol в OMS")
+Данный скрипт (вместе с OMSDataCollector.ps1) предназначен для отправки отчетов MaxPatrol в Microsoft OMS (Log Analytics). Интеграция отчетов MaxPatrol с OMS позволяет получить удобный, полезный и красивый механизм обработки данных об уязвимостях найденных с помощью MaxPatrol. 
+
 
 # Предварительные требования
 Для интеграции отчетов MaxPatrol в Microsoft OMS (Log Analytics) вам необходимо:
@@ -26,17 +27,17 @@ MaxPatrol должен быть настроен на автоматическу
 ## Структура каталогов C:\MaxPatrol_Reports
 Для правльной работы скрипта необходимо предварительно вручную создать структуру каталогов:
 
-**C:\MaxPatrol_Reports\XML\** - базовый каталог для оригинальных XML от MaxPatrol с вашими результатами сканирования. Можно расшарить по сети, чтобы MaxPatrol выкладывал отчеты по сети, автоматически
+**C:\MaxPatrol_Reports\XML\"** - базовый каталог для оригинальных XML от MaxPatrol с вашими результатами сканирования. Можно расшарить по сети, чтобы MaxPatrol выкладывал отчеты по сети, автоматически
 
-**C:\MaxPatrol_Reports\Arch\** - каталог, в который скрипт будет перекладывать устаревшие отчеты MaxPatrol. Например в каталоге C:\MaxPatrol_Reports\XML\ одновременно расположены два файла: 
+**C:\MaxPatrol_Reports\Arch\"** - каталог, в который скрипт будет перекладывать устаревшие отчеты MaxPatrol. Например в каталоге C:\MaxPatrol_Reports\XML\ одновременно расположены два файла: 
 - Отчет Аудит - Серверы 02.04.2018 00-31-01.xml 
 - Отчет Аудит - Серверы 03.04.2018 00-31-00.xml
 
 при запуске скрипта, файл Отчет Аудит - Серверы 02.04.2018 00-31-01.xml будет перемещен в каталог C:\MaxPatrol_Reports\Arch\ без обработки
 
-**C:\MaxPatrol_Reports\Log\** - каталог, в котором будет храниться журнал работы скрипта
+**C:\MaxPatrol_Reports\Log\"** - каталог, в котором будет храниться журнал работы скрипта
 
-**C:\MaxPatrol_Reports\JSON\** - каталог для хранения обработанных XML, которые сконвертированные в JSON для отправки в OMS. Если для отчета XML уже существует соответсвующий файл JSON, то повторная обработка XML проводиться не будет. JSON будет отправлен в OMS как есть. Подробнее о преобразовании MaxPatrol XML в JSON ниже в соответствующем разделе.
+**C:\MaxPatrol_Reports\JSON\"** - каталог для хранения обработанных XML, которые сконвертированные в JSON для отправки в OMS. Если для отчета XML уже существует соответсвующий файл JSON, то повторная обработка XML проводиться не будет. JSON будет отправлен в OMS как есть. Подробнее о преобразовании MaxPatrol XML в JSON ниже в соответствующем разделе.
 
 ## Рекомендации по созданию отчетов MaxPatrol
 Практика показала, что лучше всего разбивать задания сканирования  MaxPatrol на несколько отдельных циклов, например:
@@ -52,20 +53,23 @@ MaxPatrol должен быть настроен на автоматическу
 ![alt-Настройки MaxPatrol для генерации XML отчетов](https://raw.githubusercontent.com/altaranenco/OMS/master/docs/maxpatrol_settings.png "Настройки MaxPatrol для генерации XML отчетов")
 
 # Базовые дашборды Log Analytics
-В Log Analytics вы можете создавать свои собственные дашборды, подробнее: (https://docs.microsoft.com/en-us/azure/log-analytics/log-analytics-view-designer)
+В Log Analytics вы можете создавать свои собственные дашборды, подробнее: https://docs.microsoft.com/en-us/azure/log-analytics/log-analytics-view-designer
 
-[Скачать Dashboard]("https://github.com/altaranenco/OMS/blob/master/MaxPatrol/Vulnerability.omsview")
+[Скачать Dashboard](https://github.com/altaranenco/OMS/blob/master/MaxPatrol/Vulnerability.omsview)
 
 ##Overview tile dasboard
-![alt-Стартовый тайл, с информацией об уязвимостях](hhttps://github.com/altaranenco/OMS/blob/master/docs/vulnerability_01.PNG "Стартовый тайл, с информацией об уязвимостях")
+![alt-Стартовый тайл, с информацией об уязвимостях](https://github.com/altaranenco/OMS/blob/master/docs/vulnerability_01.PNG "Стартовый тайл, с информацией об уязвимостях")
 
 ##View dashboard
-![alt-Внутренности дашборда, с информацией об уязвимостях](hhttps://github.com/altaranenco/OMS/blob/master/docs/vulnerability_04.PNG "Внутренности дашборда, с информацией об уязвимостях")
+![alt-Внутренности дашборда, с информацией об уязвимостях](https://github.com/altaranenco/OMS/blob/master/docs/vulnerability_04.PNG "Внутренности дашборда, с информацией об уязвимостях")
 
 # Примеры работы
+Скрипт создает класс Vulner_CL. ![alt-Пример данных MaxPatrol в OMS](https://github.com/altaranenco/OMS/blob/master/docs/vulnerability_03.PNG "Пример данных MaxPatrol в OMS")
+
 Вывести все узявимости за последний день, сгрупировав по важности
+```
     Vulner_CL
     | where TimeGenerated > ago(1d)
     | summarize count() by Level_s
-
+```
 
