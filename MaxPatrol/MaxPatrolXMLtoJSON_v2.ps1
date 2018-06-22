@@ -30,7 +30,6 @@ $TimeStampField = (Get-Date).Date
 #Path to folder constrain MaxPatrol XMLs
 $MaxPatrolFolder="C:\MaxPatrol_Reports\XML\"
 
-
 #Folder to archive MaxPatrol XMLs after parsed and sent to OMS
 $MaxPatrolArch="C:\MaxPatrol_Reports\Arch\"
 
@@ -39,6 +38,10 @@ $LogFolder="C:\MaxPatrol_Reports\Log\"
 
 #Folder for saved JSON
 $JSONFolder="C:\MaxPatrol_Reports\JSON\"
+
+#Select your base Price Tire model for your Log Analytics, per GB or pre Node.
+#If your use per Node model, you should set this parameter to $FALSE
+$OMSPriceModeperGB = $TRUE
 
 #Number of retrying to send data to OMS 
 $OMSRetryNumber = 10
@@ -120,21 +123,52 @@ function XMLtoJSON  ($XMLPath)
                             $ScanResult | Add-Member -Type NoteProperty -Name ScanDate -Value $ScanHost.start_time 
                             if($ScanHost.fqdn -ne '')
                             {
-                                $ScanResult | Add-Member -Type NoteProperty -Name Host -Value $ScanHost.fqdn
+                               if ($OMSPriceModeperGB -eq $TRUE)
+                               {                               
+                                    $ScanResult | Add-Member -Type NoteProperty -Name Computer -Value $ScanHost.fqdn
+                               }
+                               else
+                               {
+                                    $ScanResult | Add-Member -Type NoteProperty -Name Host -Value $ScanHost.fqdn
+                               }
                             }
                             else
                             {                    
                                 if($ScanHost.netbios -ne '')
                                 {
-                                    $ScanResult | Add-Member -Type NoteProperty -Name Host -Value $ScanHost.netbios
+                                    if ($OMSPriceModeperGB -eq $TRUE)
+                                    {                               
+                                        $ScanResult | Add-Member -Type NoteProperty -Name Computer -Value $ScanHost.netbios
+                                    }
+                                    else
+                                    {
+                                        $ScanResult | Add-Member -Type NoteProperty -Name Host -Value $ScanHost.netbios
+                                    }
+                                    #$ScanResult | Add-Member -Type NoteProperty -Name Host -Value $ScanHost.netbios
                                 }
                                 else
                                 {
-                                    $ScanResult | Add-Member -Type NoteProperty -Name Host -Value $ScanHost.ip 
+                                    if ($OMSPriceModeperGB -eq $TRUE)
+                                    {                               
+                                        $ScanResult | Add-Member -Type NoteProperty -Name Computer -Value $ScanHost.ip 
+                                    }
+                                    else
+                                    {
+                                        $ScanResult | Add-Member -Type NoteProperty -Name Host -Value $ScanHost.ip 
+                                    }
+                                    #$ScanResult | Add-Member -Type NoteProperty -Name Host -Value $ScanHost.ip 
                                 }
-                            }                  
-                                                
-                            $ScanResult | Add-Member -Type NoteProperty -Name IP -Value $ScanHost.ip 
+                            }  
+
+                            if ($OMSPriceModeperGB -eq $TRUE)
+                            {                               
+                                $ScanResult | Add-Member -Type NoteProperty -Name IpAddress -Value $ScanHost.ip
+                            }
+                            else
+                            {
+                                $ScanResult | Add-Member -Type NoteProperty -Name IP -Value $ScanHost.ip 
+                            }                        
+                            
                             
                             $ScanResult | Add-Member -Type NoteProperty -Name TaskName -Value $xml.content.tasks.task.name
                             
