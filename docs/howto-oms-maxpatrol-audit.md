@@ -1,5 +1,5 @@
 # О скрипте MaxPatrolXMLtoJSON.ps1
-Данный скрипт (вместе с OMSDataCollector.ps1) предназначен для отправки отчетов MaxPatrol в Microsoft OMS (Log Analytics). Интеграция отчетов MaxPatrol с OMS позволяет получить удобный, полезный и красивый механизм обработки данных об уязвимостях найденных с помощью MaxPatrol
+Данный скрипт (вместе с OMSDataCollector.ps1) предназначен для отправки отчетов MaxPatrol в Microsoft OMS (Log Analytics). Интеграция отчетов MaxPatrol с OMS позволяет получить удобный, полезный и красивый механизм обработки данных об уязвимостях найденных с помощью MaxPatrol. Скрипт создает класс Vulner_CL. ![alt-Пример данных MaxPatrol в OMS](https://github.com/altaranenco/OMS/blob/master/docs/vulnerability_03.PNG "Пример данных MaxPatrol в OMS")
 
 # Предварительные требования
 Для интеграции отчетов MaxPatrol в Microsoft OMS (Log Analytics) вам необходимо:
@@ -8,6 +8,11 @@
 - скрипт [MaxPatrolXMLtoJSON_v2.ps1](https://github.com/altaranenco/OMS/blob/master/MaxPatrol/MaxPatrol_Pentest_XMLtoJSON_v2.ps1) и [OMSDataCollector.ps1](https://github.com/altaranenco/OMS/blob/master/OMSDataCollector.ps1) должны находить в одной папке, например C:\MaxPatrol_Reports
 - доступ в интернет к серверам OMS\Log Analytics по 443 порту, с сервера на котором будут запускаться скрипты PowerShell
 - вручную созданная структура каталогов для работы, подробнее об этом ниже
+
+# Влияние на биллинг Log Analytics
+При конвертировании из MaxPatrol XML в OMS Log Analytics происходит существенная отчистка данных от излишней информации. По моему опыту, стоит ориентироваться на сжание 10 к 1, т.е. для XML размером 250Мб полезный объем данных отправляемый в облако составит порялка 25Мб. 
+
+Важное влияние на стоимость Log Analytics заключается в модели лицензирования per Node или per GB. Если вы создавали свою Azure Subscription после мая 2018 года, то скорее всего у вас принудительно установлен тип цен per GB. По умолчанию, скрипты ориентируются именно на новую модель ценообразования OMS (per GB 2018). В таком случае, вы оплачиваете только объем загруженных данных. Если же, у вас используется модель с оплатой по агентски\за узел (per node), скрипт может дать негативный эффект с точки зрения затрат на Log Analytics. В таком случае (per Node), установите параметр скрипта в модель 
 
 
 # Настройка MaxPatrol
@@ -47,5 +52,20 @@ MaxPatrol должен быть настроен на автоматическу
 ![alt-Настройки MaxPatrol для генерации XML отчетов](https://raw.githubusercontent.com/altaranenco/OMS/master/docs/maxpatrol_settings.png "Настройки MaxPatrol для генерации XML отчетов")
 
 # Базовые дашборды Log Analytics
+В Log Analytics вы можете создавать свои собственные дашборды, подробнее: (https://docs.microsoft.com/en-us/azure/log-analytics/log-analytics-view-designer)
+
+[Скачать Dashboard]("https://github.com/altaranenco/OMS/blob/master/MaxPatrol/Vulnerability.omsview")
+
+##Overview tile dasboard
+![alt-Стартовый тайл, с информацией об уязвимостях](hhttps://github.com/altaranenco/OMS/blob/master/docs/vulnerability_01.PNG "Стартовый тайл, с информацией об уязвимостях")
+
+##View dashboard
+![alt-Внутренности дашборда, с информацией об уязвимостях](hhttps://github.com/altaranenco/OMS/blob/master/docs/vulnerability_04.PNG "Внутренности дашборда, с информацией об уязвимостях")
 
 # Примеры работы
+Вывести все узявимости за последний день, сгрупировав по важности
+    Vulner_CL
+    | where TimeGenerated > ago(1d)
+    | summarize count() by Level_s
+
+
