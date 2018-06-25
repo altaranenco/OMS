@@ -46,15 +46,16 @@ $Obj - конкретная строчка из CSV файла
 Name REASON - имя поля в OMS Log Analytics. Дополнительно к полю будет добавлен символ _s при инжекте данных в облако
 
 Текущая структура парсинга:
-        $ScanResult | Add-Member -Type NoteProperty -Name REASON -Value $Obj.REASON 
-        $ScanResult | Add-Member -Type NoteProperty -Name ISN -Value $Obj.ISN 
-        $ScanResult | Add-Member -Type NoteProperty -Name AISUSERISN -Value $Obj.AISUSERISN 
-        $ScanResult | Add-Member -Type NoteProperty -Name USERLOGIN -Value $Obj.USERLOGIN 
-        $ScanResult | Add-Member -Type NoteProperty -Name USERCOMMENT -Value $Obj.USERCOMMENT
-        $ScanResult | Add-Member -Type NoteProperty -Name CAUSE -Value $Obj.CAUSE 
-        $ScanResult | Add-Member -Type NoteProperty -Name DATE -Value $Obj.DATE       
-        $ScanResult | Add-Member -Type NoteProperty -Name Source -Value $CurrentFile     
-
+```
+    $ScanResult | Add-Member -Type NoteProperty -Name REASON -Value $Obj.REASON 
+    $ScanResult | Add-Member -Type NoteProperty -Name ISN -Value $Obj.ISN 
+    $ScanResult | Add-Member -Type NoteProperty -Name AISUSERISN -Value $Obj.AISUSERISN 
+    $ScanResult | Add-Member -Type NoteProperty -Name USERLOGIN -Value $Obj.USERLOGIN 
+    $ScanResult | Add-Member -Type NoteProperty -Name USERCOMMENT -Value $Obj.USERCOMMENT
+    $ScanResult | Add-Member -Type NoteProperty -Name CAUSE -Value $Obj.CAUSE 
+    $ScanResult | Add-Member -Type NoteProperty -Name DATE -Value $Obj.DATE       
+    $ScanResult | Add-Member -Type NoteProperty -Name Source -Value $CurrentFile     
+```
 
 
 # Примеры работы
