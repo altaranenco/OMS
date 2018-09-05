@@ -7,7 +7,7 @@
 Для интеграции отчетов MaxPatrol в Microsoft OMS (Log Analytics) вам необходимо:
 - пространство Microsoft Log Analytics
 - отчеты MaxPatrol в режиме аудита, в формате XML
-- скрипт [MaxPatrolXMLtoJSON_v2.ps1](https://github.com/altaranenco/OMS/blob/master/MaxPatrol/MaxPatrol_Pentest_XMLtoJSON_v2.ps1) и [OMSDataCollector.ps1](https://github.com/altaranenco/OMS/blob/master/OMSDataCollector.ps1) должны находить в одной папке, например C:\MaxPatrol_Reports
+- скрипт [MaxPatrolXMLtoJSON_v2.ps1](https://github.com/altaranenco/OMS/blob/master/MaxPatrol/MaxPatrolXMLtoJSON_v2.ps1) и [OMSDataCollector.ps1](https://github.com/altaranenco/OMS/blob/master/OMSDataCollector.ps1) должны находить в одной папке, например C:\MaxPatrol_Reports
 - доступ в интернет к серверам OMS\Log Analytics по 443 порту, с сервера на котором будут запускаться скрипты PowerShell
 - вручную созданная структура каталогов для работы, подробнее об этом ниже
 
