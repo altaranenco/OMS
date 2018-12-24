@@ -6,8 +6,8 @@ Don’t forget to change the variables in the script !!!
 # Prerequisites
 To transfer the SQL query results to Microsoft OMS (Log Analytics) you need:
 - Microsoft Log Analytics space
-- script [SQLtoOMSDataSender.ps1] (https://github.com/altaranenco/OMS/blob/master/LogAnalyticsScripts/SQLtoOMSDataSender.ps1) and [OMSDataCollector.ps1] (https://github.com/altaranenco/OMS/blob /master/OMSDataCollector.ps1) must be located in the same folder, for example, C: \ LogAnalyticsScripts \
-- Internet access to OMS \ Log Analytics servers on port 443, from the server on which the PowerShell scripts will be run
+- script [SQLtoOMSDataSender.ps1](https://github.com/altaranenco/OMS/blob/master/LogAnalyticsScripts/SQLtoOMSDataSender.ps1) and [OMSDataCollector.ps1](https://github.com/altaranenco/OMS/blob/master/OMSDataCollector.ps1) must be located in the same folder, for example, C:\LogAnalyticsScript\
+- Internet access to OMS\Log Analytics servers on port 443, from the server on which the PowerShell scripts will be run
 - the manually created directory structure for work, more on that below
 
 # Configure the script SQLtoOMSDataSender.ps1 before first use
@@ -33,14 +33,14 @@ order by Computer"
 
 ## directory structure
 For the script to work correctly, you must ** manually ** create a directory structure:
-** C: \ LogAnalyticsScripts ** - the root directory of the script. The SQLtoOMSDataSender.ps1 and OMSDataCollector.ps1 files should be located in the root. If you use another directory, not C: \ LogAnalyticsScripts, do not forget to change the value of the variable $ RootFolder = "C: \ LogAnalyticsScripts \" in the script, and update the dot link to the OMSDataCollector.ps1 file. Between the sign. (dot) and the file name must be 2 space characters: ". C: \ LogAnalyticsScripts \ OMSDataCollector.ps1"
+**C:\LogAnalyticsScripts** - the root directory of the script. The SQLtoOMSDataSender.ps1 and OMSDataCollector.ps1 files should be located in the root. If you use another directory, not C:\LogAnalyticsScripts, do not forget to change the value of the variable $ RootFolder = "C:\LogAnalyticsScripts\" in the script, and update the dot link to the OMSDataCollector.ps1 file. Between the sign. (dot) and the file name must be 2 space characters: ". C:\LogAnalyticsScripts\OMSDataCollector.ps1"
 
-** C: \ LogAnalyticsScripts \ Arch ** - directory in which the script will shift files after processing. For example, in the directory C: \ LogAnalyticsScripts \ Reports \ report.csv. After processing and uploading data to OMS Log Analytics, the file is transferred to the C: \ MFAStLogAnalyticsScriptsatus \ Arch directory and renamed to 20180601 report.csv
+**C:\LogAnalyticsScripts\Arch** - directory in which the script will shift files after processing. For example, in the directory C:\LogAnalyticsScripts\Reports\report.csv. After processing and uploading data to OMS Log Analytics, the file is transferred to the C:\LogAnalyticsScriptsatus\Arch directory and renamed to 20180601 report.csv
 
-** C: \ MFAStaLogAnalyticsScriptstus \ Log ** - the directory in which the script operation log will be stored
+**C:\LogAnalyticsScriptstus\Log** - the directory in which the script operation log will be stored
 
-** C: \ LogAnalyticsScripts \ JSON ** - the directory for storing processed CSVs that are converted to JSON for sending to OMS. If a corresponding JSON file already exists for a CSV report, then no CSV re-processing will be performed. JSON will be sent to OMS as is.
-** This mechanism is not used in this version of the script !!! **
+**C:\LogAnalyticsScripts\JSON** - the directory for storing processed CSVs that are converted to JSON for sending to OMS. If a corresponding JSON file already exists for a CSV report, then no CSV re-processing will be performed. JSON will be sent to OMS as is.
+**This mechanism is not used in this version of the script!!!**
 
 # work logic
 The script executes the SQL query specified in the $ Query variable.
