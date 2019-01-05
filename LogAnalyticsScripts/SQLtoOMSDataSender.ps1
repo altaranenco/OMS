@@ -139,7 +139,7 @@ function SQLtoJSON  ($SQLTab)
     {
         $UserDetails = New-Object -TypeName PSObject
         $UserDetails| Add-Member -Type NoteProperty -Name Computer -Value $ROW.Computer
-        $UserDetails| Add-Member -Type NoteProperty -Name ConsoleMinutes -Value $ROW.OS
+        $UserDetails| Add-Member -Type NoteProperty -Name OS -Value $ROW.OS
         $UserDetails| Add-Member -Type NoteProperty -Name UniqueUserName -Value $ROW.UniqueUserName
         $UserDetails| Add-Member -Type NoteProperty -Name DisplayName -Value $ROW.DisplayName0
         $UserDetails| Add-Member -Type NoteProperty -Name Full_Domain_Name -Value $ROW.Full_Domain_Name0
